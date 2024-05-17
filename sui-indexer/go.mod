@@ -10,7 +10,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/coming-chat/go-sui/v2 v2.0.1
 	github.com/creasty/defaults v1.7.0
-	github.com/ethereum/go-ethereum v1.13.11
+	github.com/ethereum/go-ethereum v1.13.15
 	github.com/getnimbus/ultrago v1.0.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-co-op/gocron/v2 v2.2.4
@@ -18,6 +18,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.5.0
 	github.com/gtuk/discordwebhook v1.2.0
+	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/json-iterator/go v1.1.12
 	github.com/kofalt/go-memoize v0.0.0-20220914132407-0b5d6a304579
 	github.com/leekchan/accounting v1.0.0
@@ -73,7 +74,6 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
-	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/holiman/uint256 v1.2.4 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
