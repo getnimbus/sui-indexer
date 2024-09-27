@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  sui-master:
+    container_name: sui-master
+    build:
+      context: .
+      target: production
+    image: sui-master
+    restart: always
+    command: "tini -- /bin/sui-master"
+    logging:
+      driver: json-file
+      options:
+        max-size: "15m"
+        max-file: "3"
+    environment:
+      ENV: prod
+      DEBUG: no
+      MIGRATION: no
+    env_file:
+      - .env
+
+  sui-worker:
+    container_name: sui-worker
+    image: sui-worker
+    restart: always
+    depends_on:
+      - sui-master
+    command: "tini -- /bin/sui-worker"
+    logging:
+      driver: json-file
+      options:
+        max-size: "15m"
+        max-file: "3"
+    environment:
+      ENV: prod
+      DEBUG: no
+      MIGRATION: no
+    env_file:
+      - .env

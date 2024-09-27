@@ -1,0 +1,45 @@
+{
+  "name": "sui-indexer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "yarn build && yarn start",
+    "dev:bg": "run-p build:watch start:watch-bg",
+    "build": "swc src -d dist --copy-files",
+    "build:watch": "swc src -d dist --copy-files --watch",
+    "start": "dotenv -- node dist/index.js",
+    "topics": "ts-node -T src/topics.ts",
+    "start:watch": "dotenv -- nodemon dist/index.js",
+    "gen:model": "npx prisma generate",
+    "test": "TEST=true ts-node -T src/test.ts",
+    "postinstall": "yarn gen:model"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fast-csv/parse": "^5.0.0",
+    "@mysten/sui.js": "^0.49.1",
+    "@prisma/client": "5.9.1",
+    "athena-struct-parser": "^1.1.0",
+    "axios": "^1.6.7",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.1",
+    "fast-csv": "^5.0.1",
+    "kafkajs": "^2.2.4",
+    "kafkajs-snappy": "^1.1.0",
+    "nodemon": "^3.0.3",
+    "socks-proxy-agent": "^8.0.2",
+    "uuid": "^9.0.1",
+    "viem": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.8",
+    "dotenv-cli": "^7.3.0",
+    "npm-run-all": "^4.1.5",
+    "prisma": "5.9.1",
+    "swc": "^1.0.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

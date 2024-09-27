@@ -1,0 +1,21 @@
+{
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "connection.password": "YOUR_POSTGRES_PASSWORD",
+    "connection.url": "jdbc:postgresql://localhost:5432/postgres",
+    "connection.user": "YOUR_POSTGRES_USER",
+    "connector.class": "io.aiven.connect.jdbc.JdbcSinkConnector",
+    "errors.deadletterqueue.context.headers.enable": "false",
+    "errors.log.enable": "false",
+    "errors.log.include.messages": "false",
+    "insert.mode": "upsert",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "name": "sui-index-connector",
+    "pk.fields": "checkpoint_seq,tx_digest,event_seq",
+    "pk.mode": "record_value",
+    "sql.quote.identifiers": "true",
+    "table.name.format": "sui_index",
+    "table.name.normalize": "false",
+    "topics": "sui-index",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter"
+  }

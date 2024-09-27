@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model trade {
+  id                    String   @db.VarChar
+  block                 Int
+  tx_hash               String
+  from_token_address    String
+  to_token_address      String
+  sender_address        String
+  origin_sender_address String
+  quanlity_in           Float    @default(0)
+  quanlity_out          Float    @default(0)
+  log_index             Int
+  exchange_name         String
+  timestamp             DateTime @db.Timestamptz(6)
+  pool_address          String
+  amount_usd            Float    @default(0)
+  chain                 String
+  fee                   Float    @default(0)
+  native_price          Float    @default(0)
+
+  @@id([id, chain], map: "PK_d4097908741dc408f8274ebdc53")
+  @@index([chain, block], map: "IDX_2d4776674fc1f520a1099a06ba")
+  @@index([chain], map: "IDX_2d4776674fc1f520a1099a06be")
+  @@index([origin_sender_address, timestamp], map: "IDX_2d4776674fc1f520a1099a06bz")
+  @@index([origin_sender_address, chain], map: "IDX_79540b15b08d2bbd918ba10d1f")
+  @@index([to_token_address], map: "IDX_9e64b39e6f973fd4fb49cd464f")
+  @@index([from_token_address], map: "IDX_deb4308902702cd5680e740395")
+  @@index([sender_address, timestamp], map: "IDX_fbc53e7c93c248ce39ca66362e")
+  @@index([origin_sender_address], map: "IDX_2d4776674fc1f520a1099a06bf", type: Hash)
+}
+
+model pool {
+  id            String  @id(map: "PK_db1bfe411e1516c01120b85f8fe") @db.VarChar
+  pool          String
+  token0        String
+  token0Decimal Int     @map("token0_decimal")
+  token1        String
+  token1Decimal Int     @map("token1_decimal")
+  fee           Float?  @default(0)
+  exchangeName  String  @map("exchange_name")
+  chain         String?
+
+  @@index([chain], map: "IDX_8422a8d9294e56417e30a7779a")
+  @@index([pool, chain], map: "IDX_c6c934e4e755eb9133a1f2e54b")
+  @@index([token0], map: "IDX_d33ce43928d5ee9e71030dc266")
+  @@index([token1], map: "IDX_d39ca709b11f93e38e867c1cec")
+}
+
+model tokens {
+  id             String     @id(map: "new_tokens_pkey") @default(uuid()) @db.VarChar
+  token_address  String     @db.VarChar
+  token_symbol   String?    @db.VarChar
+  token_name     String?    @db.VarChar
+  token_decimals Int
+  chain          String     @db.VarChar
+  logo           String?    @db.VarChar
+  created_at     DateTime   @default(now())
+  updated_at     DateTime?  @updatedAt
+
+  @@unique([chain, token_address], map: "new_tokens_chain_ca")
+  @@index([chain], map: "news_token_chains")
+}

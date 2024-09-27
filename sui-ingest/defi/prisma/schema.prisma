@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model tokens {
+  id             String    @id(map: "new_tokens_pkey") @default(uuid()) @db.VarChar
+  token_address  String    @db.VarChar
+  token_symbol   String?   @db.VarChar
+  token_name     String?   @db.VarChar
+  token_decimals Int
+  chain          String    @db.VarChar
+  logo           String?   @db.VarChar
+  created_at     DateTime  @default(now())
+  updated_at     DateTime? @updatedAt
+
+  @@unique([chain, token_address], map: "new_tokens_chain_ca")
+  @@index([chain], map: "news_token_chains")
+}
+
+model price_feeds {
+  id             String  @id @default(uuid()) @db.VarChar
+  token_address  String  @db.VarChar
+  token_symbol   String? @db.VarChar
+  token_name     String? @db.VarChar
+  token_decimals Int?
+  chain          String  @db.VarChar
+  price          Float
+  timestamp      BigInt
+
+  @@index([chain, token_address], map: "idx_chain_address_feed")
+  @@index([timestamp], map: "idx_timestamp_feed")
+}
+
+model pool {
+  id            String  @id(map: "PK_db1bfe411e1516c01120b85f8fe") @db.VarChar
+  pool          String
+  token0        String
+  token0Decimal Int     @map("token0_decimal")
+  token1        String
+  token1Decimal Int     @map("token1_decimal")
+  fee           Float?  @default(0)
+  exchangeName  String  @map("exchange_name")
+  chain         String?
+
+  @@index([chain], map: "IDX_8422a8d9294e56417e30a7779a")
+  @@index([pool, chain], map: "IDX_c6c934e4e755eb9133a1f2e54b")
+  @@index([token0], map: "IDX_d33ce43928d5ee9e71030dc266")
+  @@index([token1], map: "IDX_d39ca709b11f93e38e867c1cec")
+}
+
+model defi_clmm_lp {
+  id              String   @id @default(uuid()) @db.VarChar
+  tx_hash         String
+  owner           String
+  position        String
+  pool            String
+  token_a         String
+  token_a_quality Float    @default(0)
+  token_a_price   Float    @default(0)
+  token_b         String
+  token_b_quality Float    @default(0)
+  token_b_price   Float    @default(0)
+  tickLower       Int      @map("ticklower")
+  tickUpper       Int      @map("tickupper")
+  action          String
+  timestamp       DateTime
+  block           BigInt
+  protocol        String
+  fee             Float
+  native_price    Float
+  chain           String
+}
+
+model defi_cfmm_lp {
+  id           String   @id @default(uuid()) @db.VarChar
+  tx_hash      String
+  owner        String
+  position     String
+  pool         String
+  token_input  Json
+  token_output Json
+  lp_amount    Float
+  action       String
+  timestamp    DateTime
+  block        BigInt
+  protocol     String
+  fee          Float
+  native_price Float
+  chain        String
+}
+
+model defi_amm_lp {
+  id              String   @id @default(uuid()) @db.VarChar
+  tx_hash         String
+  owner           String
+  position        String
+  pool            String
+  token_a         String
+  token_a_quality Float    @default(0)
+  token_a_price   Float    @default(0)
+  token_b         String
+  token_b_quality Float    @default(0)
+  token_b_price   Float    @default(0)
+  lp_amount       Float
+  action          String
+  timestamp       DateTime
+  block           BigInt
+  protocol        String
+  fee             Float
+  native_price    Float
+  chain           String
+}
+
+model defi_stake {
+  id                   String   @id @default(uuid()) @db.VarChar
+  tx_hash              String
+  owner                String
+  position             String
+  token_input          String
+  token_input_quality  Float    @default(0)
+  token_input_price    Float    @default(0)
+  input_type           String // Can be Token, LP, Lending, NFT,...
+  token_output         String
+  token_output_quality Float    @default(0)
+  token_output_price   Float    @default(0)
+  action               String
+  timestamp            DateTime
+  block                BigInt
+  protocol             String
+  fee                  Float
+  native_price         Float
+  chain                String
+}
+
+model defi_lending {
+  id                   String   @id @default(uuid()) @db.VarChar
+  tx_hash              String
+  owner                String
+  position             String
+  token_input          String
+  token_input_quality  Float    @default(0)
+  token_input_price    Float    @default(0)
+  action               String
+  token_output         String
+  token_output_quality Float    @default(0)
+  token_output_price   Float    @default(0)
+  timestamp            DateTime
+  block                BigInt
+  protocol             String
+  fee                  Float
+  native_price         Float
+  chain                String
+}
