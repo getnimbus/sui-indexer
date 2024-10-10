@@ -527,18 +527,52 @@ const cacheData: Record<string, any> = {};
 export const cacheFn = async <T>(
   key: string,
   fn: Function,
-  defaultValue: T
+  defaultValue: T,
+  throwOnError: boolean = false
 ): Promise<T> => {
   if (cacheData[key]) {
     // console.log("HIT ", key);
     return cacheData[key];
   }
 
-  const value = await tryCatch(fn, defaultValue);
-  cacheData[key] = value;
-  return value;
+  try {
+    const value = await retry(() => fn());
+    cacheData[key] = value;
+    return value as T;
+  } catch (error) {
+    console.error(error);
+    if (throwOnError) {
+      throw error;
+    }
+    return defaultValue;
+  }
 };
 
 export const getTotalGasFee = (gasInput: Record<string, string>) => {
   return Object.values(gasInput).reduce((prev, cur) => prev + Number(cur), 0);
+};
+
+export const retry = async <T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  delay: number = 1000
+): Promise<T> => {
+  let retries = 0;
+  while (retries < maxRetries) {
+    try {
+      return await fn();
+    } catch (error) {
+      retries++;
+      if (retries === maxRetries) {
+        throw error;
+      }
+      console.warn(
+        `Retry attempt ${retries} failed. Retrying in ${delay}ms...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+  throw new Error(
+    "Unexpected error: Max retries reached without throwing or returning"
+  );
 };

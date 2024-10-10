@@ -48,7 +48,8 @@ export const processSwapV2 = async (event: SuiEvent): Promise<trade> => {
             };
           })
         ),
-      9
+      9,
+      true
     ),
     cacheFn(
       `${token1}_decimals`,
@@ -65,7 +66,8 @@ export const processSwapV2 = async (event: SuiEvent): Promise<trade> => {
             };
           })
         ),
-      9
+      9,
+      true
     ),
   ]);
 
@@ -156,7 +158,8 @@ export const processSwapV3 = async (event: SuiEvent): Promise<trade> => {
             };
           })
         ),
-      9
+      9,
+      true
     ),
     cacheFn(
       `${token1}_decimals`,
@@ -173,7 +176,8 @@ export const processSwapV3 = async (event: SuiEvent): Promise<trade> => {
             };
           })
         ),
-      9
+      9,
+      true
     ),
   ]);
 

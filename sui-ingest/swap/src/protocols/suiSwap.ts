@@ -44,7 +44,8 @@ export const process = async (event: SuiEvent): Promise<trade> => {
             };
           })
         ),
-      9
+      9,
+      true
     ),
     cacheFn(
       `${token1}_decimals`,
@@ -61,7 +62,8 @@ export const process = async (event: SuiEvent): Promise<trade> => {
             };
           })
         ),
-      9
+      9,
+      true
     ),
   ]);
   const isFromA = payload.x_to_y;
